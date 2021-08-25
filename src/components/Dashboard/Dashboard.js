@@ -35,7 +35,7 @@ const Dashboard = () => {
 
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/api').then((response) => {
+        axios.get('https://eirpol.herokuapp.com/api').then((response) => {
           setTDData(response.data.filter(function(d) {
           
             if(d.followerData[0] != undefined) {

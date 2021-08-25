@@ -1,0 +1,9 @@
+a:link, a:visited {
+    color: "green";
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  a:link:active, a:visited:active {
+    color: "yellow";
+  }

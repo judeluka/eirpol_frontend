@@ -1,0 +1,108 @@
+.featuredItem {
+    background-color: #191C24;
+    flex: 1;
+    padding: 30px;
+    margin: 10px 20px;
+    border-radius: 10px;
+    color: white
+
+}
+
+.featuredTitle {
+
+    font-size: 20px;
+    color: white;
+    margin-left: 10px;
+    margin-top: 10px;
+
+}
+
+.featuredFollowerContainer{
+    margin: 10px 0px;
+    display: flex;
+    align-items: center;
+    color: white;
+
+}
+
+.featuredFollowers {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.featuredFollowerChange {
+
+    font-size: 15px;
+    margin-left: 5px;
+
+}
+
+
+
+.featuredSub {
+    color: #6C7293;
+    display: inline-block;
+    margin-bottom: 10px;
+ 
+}
+
+.party-dot-fg {
+
+        margin-left: 10px;
+        height: 15px;
+        width: 15px;
+        background-color: #6699FF;
+        border-radius: 50%;
+        display: inline-block;
+      
+
+}
+
+.party-dot-sf {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #326760;
+    border-radius: 50%;
+    display: inline-block;
+  
+
+}
+
+
+.party-dot-grn {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #22AC6F;
+    border-radius: 50%;
+    display: inline-block;
+  
+
+}
+
+.party-dot-ff {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #66BB66;
+    border-radius: 50%;
+    display: inline-block;
+  
+
+}
+
+.party-dot-ind {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+  
+
+}

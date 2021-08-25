@@ -3,7 +3,6 @@ import { Avatar, Grid, useForkRef, Typography } from '@material-ui/core'
 import {ArrowDownward, ArrowUpward, ContactlessOutlined, LocalConvenienceStoreOutlined, SettingsPhoneTwoTone} from '@material-ui/icons'
 import './featureditem.css'
 import * as d3 from 'd3'
-import { set } from 'mongoose'
 import { BarChart } from '../BarChart'
 
 

@@ -50,7 +50,7 @@ export const DailSentimentGauge = ({data}) => {
     return (
         <div className="featuredItem">
             <Typography variant="h6">Dáil Sentiment</Typography>
-            <p style={{fontSize: 14}}>How positive or negative TD's have been Twitter over the past week. Value lies between [-1, 1] where 1 is most positive.</p>
+            <p style={{fontSize: 14}}>How positive or negative TD's have been on Twitter over the past week. Value lies between [-1, 1] where 1 is most positive.</p>
             <div className="featuredFollowerContainer">
             <span className="featuredFollowers">{dailPolAvg.toLocaleString()}</span>
             <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>

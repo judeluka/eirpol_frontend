@@ -1,9 +1,30 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Typography } from '@material-ui/core'
 import './welcome.css'
 
 
-const Welcome = () => {
+const Welcome = ({data}) => {
+
+
+    const [TDFollowerDataObjArr, setTDFollowerDataObjArr] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
+
+    useEffect(() => {
+
+        setTDFollowerDataObjArr(data)
+
+    }, [])
+
+    useEffect(() => {
+
+        if(!TDFollowerDataObjArr) return null;
+
+        setCurrentWeekIndex(TDFollowerDataObjArr.length - 1)
+
+    }, [TDFollowerDataObjArr])
+
+
+    if(!currentWeekIndex || !TDFollowerDataObjArr) return null;
 
 
     return (
@@ -40,7 +61,7 @@ const Welcome = () => {
                 <li style={{listStyleType: "circle", marginLeft: "20px", marginBottom: "5px"}}>"Is their a correlation between a TD's subjectivity or polarity, and the Party they are in?"</li>
                 <li style={{listStyleType: "circle", marginLeft: "20px", marginBottom: "5px"}}>"Are subjective or polarising TD's more or less engaging?"</li>
                 </ul>
-                <p style={{marginTop: "15px"}}>Collections run every Tuesday since <b style={{fontWeight: 600}}>25/08/21</b>. Last Collection <b style={{fontWeight: 600}}>25/08/21</b>.
+                <p style={{marginTop: "15px"}}>Collections run every Tuesday since <b style={{fontWeight: 600}}>25/08/2021</b>. Last Collection <b style={{fontWeight: 600}}>{TDFollowerDataObjArr[currentWeekIndex].date}</b>.
                 </p>
         </div>
         </>

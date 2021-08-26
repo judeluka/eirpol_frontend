@@ -48,21 +48,22 @@ const Scatterplot = ({data}) => {
     const [yOption, setYOption] = useState(1)
     const [rOption, setROption] = useState(0)
     const [filteredTDData, setFilteredTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
 
 
  
 
-    const followers = d => d.followerData[2].followers
-    const retweets = d => d.retweetData[2].retweets
-    const original_tweets = d => d.retweetData[2].original_tweets
-    const polarity = d => d.sentimentData[2].polarity
-    const subjectivity = d => d.sentimentData[2].subjectivity
+    const followers = d => d.followerData[currentWeekIndex].followers
+    const retweets = d => d.retweetData[currentWeekIndex].retweets
+    const original_tweets = d => d.retweetData[currentWeekIndex].original_tweets
+    const polarity = d => d.sentimentData[currentWeekIndex].polarity
+    const subjectivity = d => d.sentimentData[currentWeekIndex].subjectivity
     const followersPerRetweet = (d) => {
 
-      var f = d.followerData[2].followers
-      var r = d.retweetData[2].retweets 
+      var f = d.followerData[currentWeekIndex].followers
+      var r = d.retweetData[currentWeekIndex].retweets 
  
       var test = f / r
 
@@ -78,8 +79,8 @@ const Scatterplot = ({data}) => {
     }
     const retweetsPerOriginalTweet = (d) => {
 
-      var r = d.retweetData[2].retweets 
-      var o = d.retweetData[2].original_tweets
+      var r = d.retweetData[currentWeekIndex].retweets 
+      var o = d.retweetData[currentWeekIndex].original_tweets
 
       var test = r / o
 
@@ -130,22 +131,15 @@ const Scatterplot = ({data}) => {
   
 }, []);
 
+useEffect(() => {
 
-//   function getTDsFromApiAsync() {
-//   return fetch("https://api.oireachtas.ie/v1/members?date_start=1900-01-01&chamber_id=&date_end=2099-01-01&limit=50")
-//   .then((response) => response.json())
-//   .then((responseJson) => {
-//     return responseJson.movies;
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
-// }
+  if(!TDDataScatter) return null;
+
+  setCurrentWeekIndex(TDDataScatter[0].followerData.length - 1)
+
+}, [TDDataScatter])
 
 
-// console.log(getTDsFromApiAsync())
-
-  const wrapperRef = useRef()
   const svgRef = useRef()
 
     const options = [
@@ -269,12 +263,12 @@ const Scatterplot = ({data}) => {
 
 
 
-  var k = height / width,
-  x0 = [-4.5, 4.5],
-  y0 = [-4.5 * k, 4.5 * k],
-  x = d3.scaleLinear().domain(x0).range([0, width]),
-  y = d3.scaleLinear().domain(y0).range([height, 0]),
-  z = d3.scaleOrdinal(d3.schemeCategory10);
+  // var k = height / width,
+  // x0 = [-4.5, 4.5],
+  // y0 = [-4.5 * k, 4.5 * k],
+  // x = d3.scaleLinear().domain(x0).range([0, width]),
+  // y = d3.scaleLinear().domain(y0).range([height, 0]),
+  // z = d3.scaleOrdinal(d3.schemeCategory10);
 
  
 

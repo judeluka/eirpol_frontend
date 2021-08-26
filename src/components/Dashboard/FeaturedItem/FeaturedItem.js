@@ -3,7 +3,6 @@ import { Avatar, Grid, useForkRef, Typography } from '@material-ui/core'
 import {ArrowDownward, ArrowUpward, ContactlessOutlined, LocalConvenienceStoreOutlined, SettingsPhoneTwoTone} from '@material-ui/icons'
 import './featureditem.css'
 import * as d3 from 'd3'
-import { set } from 'mongoose'
 import { BarChart } from '../BarChart'
 
 
@@ -12,6 +11,7 @@ export const MostFollowedTD = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
     useEffect(() => {
 
@@ -19,9 +19,17 @@ export const MostFollowedTD = ({data}) => {
 
     }, [])
 
+    useEffect(() => {
+
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
+
     
     
-    if(!TDData) return null;
+    if(!TDData || !currentWeekIndex) return null;
 
     const leo = TDData.filter(d => d.name === 'Leo Varadkar')[0]
 
@@ -38,7 +46,7 @@ export const MostFollowedTD = ({data}) => {
         </Grid>
         </Grid>
         <div className="featuredFollowerContainer">
-            <span className="featuredFollowers">{leo.followerData[2].followers.toLocaleString()}</span>
+            <span className="featuredFollowers">{leo.followerData[currentWeekIndex].followers.toLocaleString()}</span>
                 <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>
         </div>
         
@@ -52,6 +60,7 @@ export const MostFollowedParty = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
     useEffect(() => {
@@ -61,11 +70,18 @@ export const MostFollowedParty = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
+
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
 
     
 
-    if(!TDData) return null;
-    const justFG = TDData.filter(d => d.party !== 'Fine Gael').map(d => d.followerData[2].followers).reduce(function(a, b) {return a + b})
+    if(!TDData || !currentWeekIndex) return null;
+    const justFG = TDData.filter(d => d.party !== 'Fine Gael').map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b})
     
     console.log(justFG)
 
@@ -101,6 +117,7 @@ export const MostRetweetedTD = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
     useEffect(() => {
@@ -109,11 +126,20 @@ export const MostRetweetedTD = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
 
-    if(!TDData) return null;
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
+
+
+    if(!TDData || !currentWeekIndex) return null;
+
     const mostRetweetsTD = TDData.sort(function(a, b) {
 
-        return   d3.descending(a.retweetData[2].retweets, b.retweetData[2].retweets)
+        return   d3.descending(a.retweetData[currentWeekIndex].retweets, b.retweetData[currentWeekIndex].retweets)
 
        })
 
@@ -133,7 +159,7 @@ export const MostRetweetedTD = ({data}) => {
 
 
         <div className="featuredFollowerContainer">
-            <span className="featuredFollowers">{mostRetweetsTD[0].retweetData[2].retweets}</span>
+            <span className="featuredFollowers">{mostRetweetsTD[0].retweetData[currentWeekIndex].retweets}</span>
             <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>
         </div>
         
@@ -147,6 +173,7 @@ export const MostActiveTD = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
     useEffect(() => {
@@ -155,11 +182,19 @@ export const MostActiveTD = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
 
-    if(!TDData) return null;
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
+
+
+    if(!TDData || !currentWeekIndex) return null;
     const mostRetweetsTD = TDData.sort(function(a, b) {
 
-        return   d3.descending(a.retweetData[2].original_tweets, b.retweetData[2].original_tweets)
+        return   d3.descending(a.retweetData[currentWeekIndex].original_tweets, b.retweetData[currentWeekIndex].original_tweets)
 
        })
 
@@ -179,7 +214,7 @@ export const MostActiveTD = ({data}) => {
 
 
         <div className="featuredFollowerContainer">
-            <span className="featuredFollowers">{mostRetweetsTD[0].retweetData[2].original_tweets}</span>
+            <span className="featuredFollowers">{mostRetweetsTD[0].retweetData[currentWeekIndex].original_tweets}</span>
             <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>
         </div>
         
@@ -194,6 +229,7 @@ export const MostNegativeTD = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
     useEffect(() => {
@@ -203,13 +239,22 @@ export const MostNegativeTD = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
+
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
+
 
     
 
-    if(!TDData) return null;
+    if(!TDData || !currentWeekIndex) return null;
+
     const mostNegativeTD = TDData.sort(function(a, b) {
 
-        return   d3.ascending(a.sentimentData[2].polarity, b.sentimentData[2].polarity)
+        return   d3.ascending(a.sentimentData[currentWeekIndex].polarity, b.sentimentData[currentWeekIndex].polarity)
 
        })
 
@@ -231,7 +276,7 @@ export const MostNegativeTD = ({data}) => {
 
 
         <div className="featuredFollowerContainer">
-            <span className="featuredFollowers">{mostNegativeTD[0].sentimentData[2].polarity.toLocaleString()}</span>
+            <span className="featuredFollowers">{mostNegativeTD[0].sentimentData[currentWeekIndex].polarity.toLocaleString()}</span>
             <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>
         </div>
         
@@ -248,6 +293,7 @@ export const MostPositiveTD = ({data}) => {
 
 
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
 
     useEffect(() => {
@@ -257,13 +303,21 @@ export const MostPositiveTD = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
+
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
 
     
 
-    if(!TDData) return null;
+    if(!TDData || !currentWeekIndex) return null;
+
     const mostPositiveTD = TDData.sort(function(a, b) {
 
-        return   d3.descending(a.sentimentData[2].polarity, b.sentimentData[2].polarity)
+        return   d3.descending(a.sentimentData[currentWeekIndex].polarity, b.sentimentData[currentWeekIndex].polarity)
 
        })
 
@@ -285,7 +339,7 @@ export const MostPositiveTD = ({data}) => {
 
 
         <div className="featuredFollowerContainer">
-            <span className="featuredFollowers">{mostPositiveTD[0].sentimentData[2].polarity.toLocaleString()}</span>
+            <span className="featuredFollowers">{mostPositiveTD[0].sentimentData[currentWeekIndex].polarity.toLocaleString()}</span>
             <span className="featuredFollowerChange">+100% <ArrowUpward style={{fill: "green"}}/></span>
         </div>
         
@@ -309,6 +363,7 @@ export const DailTotal = ({data}) => {
     const [tenTot, setTenTot] = useState(null)
     const [percTopTot, setPercTopTot] = useState(null)
     const [avg, setAvg] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
 
     useEffect(() => {
 
@@ -317,15 +372,23 @@ export const DailTotal = ({data}) => {
 
     }, [data])
 
+    useEffect(() => {
+
+        if(!TDData) return null;
+
+        setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+    }, [TDData])
+
 
     
 
     useEffect(() => {
 
-        if(!TDData) return null;
+        if(!TDData || !currentWeekIndex) return null;
 
 
-        const holder = TDData.map(d => d.followerData[2].followers)
+        const holder = TDData.map(d => d.followerData[currentWeekIndex].followers)
         const total = holder.reduce(function(a, b) {
             return a + b
         })
@@ -347,7 +410,7 @@ export const DailTotal = ({data}) => {
         const topFive = TDDataHolder.sort(function (a, b) {
 
 
-            return d3.descending(a.followerData[2].followers, b.followerData[2].followers)
+            return d3.descending(a.followerData[currentWeekIndex].followers, b.followerData[currentWeekIndex].followers)
 
 
 
@@ -358,7 +421,7 @@ export const DailTotal = ({data}) => {
 
         
 
-        const testtf = topFive.map(d => d.followerData[2].followers)
+        const testtf = topFive.map(d => d.followerData[currentWeekIndex].followers)
 
 
         testtf.length = 10
@@ -381,7 +444,7 @@ export const DailTotal = ({data}) => {
         console.log(percTopTot)
         
 
-    }, [TDData])
+    }, [TDData, currentWeekIndex])
 
 
 
@@ -389,7 +452,7 @@ export const DailTotal = ({data}) => {
 
 
     
-    if(!TDData || !total) return null;
+    if(!TDData || !total || !currentWeekIndex) return null;
 
 
     

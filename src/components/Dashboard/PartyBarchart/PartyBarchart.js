@@ -61,6 +61,7 @@ export const PartyBarchart = ({data}) => {
 
     
     const [TDData, setTDData] = useState(null)
+    const [currentWeekIndex, setCurrentWeekIndex] = useState(null)
     const [xOption, setXOption] = useState(1)
     const [yOption, setYOption] = useState(0)
     const [secOption, setSecOption] = useState(1)
@@ -101,9 +102,18 @@ useEffect(() => {
 
 }, [])
 
+useEffect(() => {
+
+    if(!TDData) return null;
+
+    setCurrentWeekIndex(TDData[0].followerData.length - 1)
+
+}, [TDData])
+
+
     useEffect(() => {
 
-        if(!TDData) return null;
+        if(!TDData || !currentWeekIndex) return null;
 
         function makePartyObj() {
 
@@ -125,8 +135,8 @@ useEffect(() => {
                     return x !== undefined
                 })
 
-        var follows = a.map(d => d.followerData[0].followers).reduce(function(a, b) {return a + b})
-        var retweets = a.map(d => d.retweetData[0].retweets).reduce(function(a, b) {return a + b})
+        var follows = a.map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b})
+        var retweets = a.map(d => d.retweetData[currentWeekIndex].retweets).reduce(function(a, b) {return a + b})
         var ratio = follows / retweets
 
         if(ratio === Infinity) {
@@ -146,8 +156,8 @@ useEffect(() => {
                     return x !== undefined
                 })
 
-        var retweets = a.map(d => d.retweetData[0].retweets).reduce(function(a, b) {return a + b})
-        var original_tweets = a.map(d => d.retweetData[0].original_tweets).reduce(function(a, b) {return a + b})
+        var retweets = a.map(d => d.retweetData[currentWeekIndex].retweets).reduce(function(a, b) {return a + b})
+        var original_tweets = a.map(d => d.retweetData[currentWeekIndex].original_tweets).reduce(function(a, b) {return a + b})
         var ratio = retweets / original_tweets
 
         if(ratio === Infinity) {
@@ -172,11 +182,11 @@ useEffect(() => {
             }).filter(function(x) {
                         return x !== undefined
                     })
-            this.totalFollows = this.TDs.map(d => d.followerData[0].followers).reduce(function(a, b) {return a + b})
-            this.totalRetweets = this.TDs.map(d => d.retweetData[0].retweets).reduce(function(a, b) {return a + b})
-            this.totalOriginalTweets = this.TDs.map(d => d.retweetData[0].original_tweets).reduce(function(a, b) {return a + b})
+            this.totalFollows = this.TDs.map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b})
+            this.totalRetweets = this.TDs.map(d => d.retweetData[currentWeekIndex].retweets).reduce(function(a, b) {return a + b})
+            this.totalOriginalTweets = this.TDs.map(d => d.retweetData[currentWeekIndex].original_tweets).reduce(function(a, b) {return a + b})
             this.TDAmount = this.TDs.length
-            this.followersToTDs = (this.TDs.map(d => d.followerData[0].followers).reduce(function(a, b) {return a + b}) / this.TDAmount)
+            this.followersToTDs = (this.TDs.map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b}) / this.TDAmount)
             this.retweetsToFollowers = retweetsToFollowersFunc(i)
             this.retweetsToOriginalTweets = retweetsToOriginalTweetsFunc(i)
         }
@@ -288,7 +298,7 @@ useEffect(() => {
                             tooltip.html(``).style('visibility', 'hidden');
                             d3.select(this).transition().attr('fill', partyColor);
                         }); 
-    }, [TDData, xOption, yOption, secOption])
+    }, [TDData, xOption, yOption, secOption, currentWeekIndex])
 
 
 

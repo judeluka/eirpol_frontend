@@ -35,7 +35,7 @@ const Dashboard = () => {
 
 
     React.useEffect(() => {
-        axios.get('http://localhost:8080/api').then((response) => {
+        axios.get('https://eirpol.herokuapp.com/api').then((response) => {
           setTDData(response.data.filter(function(d) {
           
             if(d.followerData[0] != undefined) {
@@ -66,7 +66,7 @@ const Dashboard = () => {
         <Grid container xs={12} spacing={0}>         
 
             <Grid item xs={12} sm={12}>
-                <Welcome />
+                <Welcome data={TDData[0].followerData}/>
             </Grid>
             <Grid item xs={12} sm={4}>
                 <MostFollowedTD data={TDData}/>

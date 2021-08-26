@@ -26,30 +26,17 @@ function App() {
 
 
   const [inactive, setInactive] = useState(false);
-  // const [TDData, setTDData] = useState({hits: []})
+  const [TDData, setTDData] = useState(null)
 
 
-//  const fetchData = () => {
-//     axios.get('http://localhost:8080/api')
-//     .then((response) =>  {
-//       const data = response.data
-//       setTDData(data)
-//       console.log('Data has been received')
-      
-//     })
-//     .catch(() => {
-//       alert('Error retrieving data');
-//     });
-    
-//   }
-
-  // useEffect(() => {
+    useEffect(() => {
+    axios.get('https://eirpol.herokuapp.com/api').then((response) => {
+      setTDData(response.data);
+    });
+  }, [])
 
 
-  //   fetchData()
-  //   console.log(TDData)
-
-  // }, []);
+    if(!TDData) return null;
   
 
 
@@ -88,29 +75,13 @@ function App() {
             <Route exact path={"/"}>
               <Dashboard/>
             </Route>
-            <Route path={"/tdlist"}>
-            <TDList />
+            <Route path={"/TDs"}>
+            <TDList data={TDData}/>
             </Route>
-            <Route path={"/td/michaelmartin"}>
+            <Route path={"/TDs/michaelmartin"}>
               <TDPage />
             </Route>
-            <Route path={"/design"}>
-              <TDList />
-            </Route>
-            <Route exact path={"/content-2"}>
-              <Content2 />
-            </Route>
-            <Route path={"/content-2/courses"}>
-              <Courses2 />
-            </Route>
-            <Route path={"/content-2/videos"}>
-              <Videos2 />
-            </Route>
-            <Route path={"/design-2"}>
-              <Design2 />
-            </Route>
           </Switch>
-        
       </Router>
       <Footer>
         

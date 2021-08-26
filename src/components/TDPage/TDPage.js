@@ -18,10 +18,8 @@ const TDPage = () => {
             <Grid item xs={12}>
                 <TDConnectivityGauge/>
             </Grid>
-
-
             <Grid item xs={12}>
-            <TDFollowerStats/>
+                <TDFollowerStats/>
             </Grid>
             <Grid item xs={12}>
                 <TDRetweetStats/>
@@ -29,7 +27,6 @@ const TDPage = () => {
             <Grid item xs={12}>
                 <TDTwitterActivity/>
             </Grid>
-
         </Grid>
     )
 }

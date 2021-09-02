@@ -55,7 +55,6 @@
         border-radius: 50%;
         display: inline-block;
       
-
 }
 
 .party-dot-sf {
@@ -67,7 +66,6 @@
     border-radius: 50%;
     display: inline-block;
   
-
 }
 
 
@@ -80,7 +78,6 @@
     border-radius: 50%;
     display: inline-block;
   
-
 }
 
 .party-dot-ff {
@@ -92,7 +89,6 @@
     border-radius: 50%;
     display: inline-block;
   
-
 }
 
 .party-dot-ind {
@@ -104,5 +100,60 @@
     border-radius: 50%;
     display: inline-block;
   
-
 }
+
+.party-dot-soc-dem {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #752F8B;
+    border-radius: 50%;
+    display: inline-block;
+  
+}
+
+.party-dot-aon {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #44532A;
+    border-radius: 50%;
+    display: inline-block;
+  
+}
+
+.party-dot-I4C {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: grey;
+    border-radius: 50%;
+    display: inline-block;
+  
+}
+
+.party-dot-pbp {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #660000;
+    border-radius: 50%;
+    display: inline-block;
+  
+}
+
+.party-dot-lab {
+
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    background-color: #CC0000;
+    border-radius: 50%;
+    display: inline-block;
+  
+}
+

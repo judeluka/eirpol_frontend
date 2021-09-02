@@ -19,7 +19,7 @@ import { Typography } from "@material-ui/core";
 
 
 
-export default function MultilineAppV3PartyRetweets (data) {
+export default function MultilineAppV3PartyRetweets ({data}) {
 
   const [selectedItems, setSelectedItems] = useState(["Aontú", "Independents", "Green Party", "Labour", "Fianna Fáil", "Fine Gael", "Social Democrats", "People Before Profit", "Independents 4 Change", "Sinn Féin"]);
   const [TDData, setTDData] = useState(null)
@@ -28,7 +28,13 @@ export default function MultilineAppV3PartyRetweets (data) {
   
   useEffect(() => {
 
-    setTDData(data)
+    setTDData(data.filter(function(d) {
+          
+      if(d.followerData[0] != undefined) {
+      return d
+    }
+  }
+  ))
 
 }, []);
 
@@ -49,13 +55,13 @@ if (!TDData) return null;
 
 
 
-console.log(TDData.data.filter(d => d.party == "Fine Gael"))
+console.log(TDData.filter(d => d.party == "Fine Gael"))
 
 
 
 
 
-
+  console.log(TDData.map(d => d.retweetData))
 
 
 
@@ -65,12 +71,15 @@ console.log(TDData.data.filter(d => d.party == "Fine Gael"))
 //   color: "#ffffff",
 //   items: partyStats('sf').followerData.map((d) => ({ ...d, date: new Date(d.date) }))
 // };
-  const weeks = TDData.data[0].retweetData.length
+  const weeks = TDData[0].retweetData.length
+
+
+
 
 function justParty(party) {
 
 
-  var just = TDData.data.filter(td => td.party == party)
+  var just = TDData.filter(td => td.party == party)
 
   
 

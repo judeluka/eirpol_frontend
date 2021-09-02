@@ -25,26 +25,29 @@ import MultilineAppV3PartyPolarity from './MultilineChartV3PartyPolarity/Multili
 import MultilineAppV3PartySubjectivity from './MultilineChartV3PartySubjectivity/MultilineAppV3PartySubjectivity'
 import ComingSoon from './ComingSoon'
 import Welcome from './Welcome/Welcome'
+import Issues from './Issues/Issues'
 
 
 
-const Dashboard = () => {
+const Dashboard = ({data}) => {
 
     const [TDData, setTDData] = useState(null)
-    const [oirData, setOirData] = useState(null)
 
 
-    React.useEffect(() => {
-        axios.get('https://eirpol.herokuapp.com/api').then((response) => {
-          setTDData(response.data.filter(function(d) {
+    // React.useEffect(() => {
+    //     axios.get('https://eirpol.herokuapp.com/api').then((response) => {
+    //        setTDData(response.data);
+            
+        // .filter(function(d) {
           
-            if(d.followerData[0] != undefined) {
-            return d
-          }
-        }
-        ));
+        //     if(d.followerData[0] != undefined) {
+        //     return d
+        //   }
+        // }
+        // 
+
           
-        });
+        // });
 
         // axios.get('https://api.oireachtas.ie/v1/members?date_start=2020-01-01&chamber_id=&date_end=2099-01-01&limit=50').then((response) => {
 
@@ -53,12 +56,22 @@ const Dashboard = () => {
         //   });
         
         
-      }, []);
+    //   }, []);
+
+
+    useEffect(() => {
+
+        setTDData(data)
+
+    }, [])
     
+console.log(data)
+
+
 
       if (!TDData) return null;
 
-        console.log(TDData)
+        
 
     return (
         
@@ -68,6 +81,7 @@ const Dashboard = () => {
             <Grid item xs={12} sm={12}>
                 <Welcome data={TDData[0].followerData}/>
             </Grid>
+
             <Grid item xs={12} sm={4}>
                 <MostFollowedTD data={TDData}/>
             </Grid>
@@ -96,8 +110,8 @@ const Dashboard = () => {
                 <DailConnectivityGauge data={TDData}/>
             </Grid>        
             <Grid item xs={12} sm={12}>
-                <DailTotal data={TDData}/>
-            </Grid>  
+                <BarChart data={TDData}/>
+            </Grid> 
             <Grid item xs={12} sm={12}>
                 <Scatterplot data={TDData}/>
             </Grid>
@@ -122,6 +136,9 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12} sm={12}>
                 <MultilineAppV3PartySubjectivity data={TDData}/>
+            </Grid>
+            <Grid item xs={12} sm={12}>
+                <Issues data={TDData}/>
             </Grid>            
             {/* <Grid item xs={12} sm={6}>
                 <VoteBarchart data={TDData}/>

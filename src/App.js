@@ -37,17 +37,6 @@ function App() {
 
 
     if(!TDData) return null;
-  
-
-
-
-
-
-
-
-
-
-
 
   return (
     <div className="App">
@@ -73,18 +62,17 @@ function App() {
 
           <Switch>
             <Route exact path={"/"}>
-              <Dashboard/>
+              <Dashboard data={TDData}/>
             </Route>
-            <Route path={"/TDs"}>
+            <Route path="/TDs">
             <TDList data={TDData}/>
             </Route>
-            <Route path={"/TDs/michaelmartin"}>
-              <TDPage />
+            <Route path="/:TD">
+              <TDPage data={TDData}/>
             </Route>
           </Switch>
       </Router>
-      <Footer>
-        
+      <Footer>  
       </Footer>
     </div>
   );

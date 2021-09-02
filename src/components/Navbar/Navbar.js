@@ -26,6 +26,17 @@ function Navbar() {
                 Twitter Data
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                exact
+                to="/TDs"
+                activeClassName="active"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                TD List
+              </NavLink>
+            </li>
             {/* <li className="nav-item">
               <NavLink
                 exact

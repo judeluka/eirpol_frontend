@@ -15,7 +15,13 @@ export const MostFollowedTD = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
 
     }, [])
 
@@ -65,7 +71,13 @@ export const MostFollowedParty = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])
@@ -122,7 +134,13 @@ export const MostRetweetedTD = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
 
     }, [data])
 
@@ -178,7 +196,13 @@ export const MostActiveTD = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
 
     }, [data])
 
@@ -234,7 +258,13 @@ export const MostNegativeTD = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])
@@ -298,7 +328,13 @@ export const MostPositiveTD = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])
@@ -367,7 +403,13 @@ export const DailTotal = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])

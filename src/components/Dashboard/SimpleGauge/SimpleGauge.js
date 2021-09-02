@@ -13,7 +13,13 @@ export const DailSentimentGauge = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])
@@ -74,7 +80,13 @@ export const DailConnectivityGauge = ({data}) => {
 
     useEffect(() => {
 
-        setTDData(data)
+        setTDData(data.filter(function(d) {
+          
+            if(d.followerData[0] != undefined) {
+            return d
+          }
+        }
+        ))
         console.log(TDData)
 
     }, [data])

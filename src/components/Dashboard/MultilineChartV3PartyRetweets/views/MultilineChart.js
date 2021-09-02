@@ -9,7 +9,7 @@ import useDimensions from "../utils/useDimensions";
 const MultilineChart = ({ data = [], margin = {} }) => {
   const overlayRef = React.useRef(null);
   const [containerRef, { svgWidth, svgHeight, width, height }] = useDimensions({
-    maxHeight: 800,
+    maxHeight: 400,
     margin
   });
   const controller = useController({ data, width, height });

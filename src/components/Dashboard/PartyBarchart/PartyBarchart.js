@@ -40,7 +40,7 @@ export const PartyBarchart = ({data}) => {
 
     const options = [
 
-    "Followers", "Retweets", "Original Tweets", "TDs", "Average Followers", "Followers per Retweets", "Retweets per Original Tweet"
+    "Followers", "Retweets", "Original Tweets", "TDs", "Average Followers", "Follower Engagement Rate", "Retweets per Original Tweet", "Written Questions Asked", "Oral Questions Asked", "Average Written Questions Asked by TD", "Average Oral Questions Asked by TD"
     
     ]
 
@@ -49,12 +49,17 @@ export const PartyBarchart = ({data}) => {
     const originalTweets = d => d.totalOriginalTweets
     const TDAmount = d => d.TDAmount
     const TDFollowerAvg = d => d.followersToTDs
-    const retweetsToFollowers = d => d.retweetsToFollowers
+    const followerEngagementRate = d => d.followerEngagementRate
     const retweetsToOriginalTweetsFunc = d => d.retweetsToOriginalTweets
+    const writtenQuestionsAsked = d => d.writtenQuestionsAsked
+    const oralQuestionsAsked = d => d.oralQuestionsAsked
+    const writtenQuestionsAskedAverage = d=> d.writtenQuestionsAskedAverage
+    const oralQuestionsAskedAverage = d=> d.oralQuestionsAskedAverage
+
 
     const optionsFunctions = 
     
-    [ followers, retweets, originalTweets, TDAmount, TDFollowerAvg, retweetsToFollowers, retweetsToOriginalTweetsFunc]
+    [ followers, retweets, originalTweets, TDAmount, TDFollowerAvg, followerEngagementRate, retweetsToOriginalTweetsFunc,  writtenQuestionsAsked, oralQuestionsAsked, writtenQuestionsAskedAverage, oralQuestionsAskedAverage]
 
 
     const classes = useStyles();
@@ -98,7 +103,13 @@ const onChangeSec = (event, child) => {
 
 useEffect(() => {
 
-    setTDData(data)
+    setTDData(data.filter(function(d) {
+          
+        if(d.followerData[0] != undefined) {
+        return d
+      }
+    }
+    ))
 
 }, [])
 
@@ -125,7 +136,7 @@ useEffect(() => {
 
 
 
-       function retweetsToFollowersFunc(i) {
+       function followerEngagementRateFunc(i) {
 
         var a = TDData.map(function(d) {
             if(parties[i] === d.party) {
@@ -137,7 +148,7 @@ useEffect(() => {
 
         var follows = a.map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b})
         var retweets = a.map(d => d.retweetData[currentWeekIndex].retweets).reduce(function(a, b) {return a + b})
-        var ratio = follows / retweets
+        var ratio = retweets / follows
 
         if(ratio === Infinity) {
             ratio = 0
@@ -170,6 +181,62 @@ useEffect(() => {
 
        }
 
+       function writtenQuestionsAsked(i) {
+
+        var a = TDData.map(function(d) {
+            if(parties[i] === d.party) {
+                return d
+            }
+        }).filter(function(x) {
+                    return x !== undefined
+                })
+
+
+               var b = a.map(function(d) {
+
+                var holder = d.writtenQuestions[0].writtenQuestions.to
+                if(!holder) return 0;
+                const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
+              
+                var sum = sumValues(holder)
+              
+                return sum
+                }).reduce(function(a,b) {return a + b})
+
+
+                return b
+
+
+       }
+
+       function oralQuestionsAsked(i) {
+
+        var a = TDData.map(function(d) {
+            if(parties[i] === d.party) {
+                return d
+            }
+        }).filter(function(x) {
+                    return x !== undefined
+                })
+
+
+               var b = a.map(function(d) {
+
+                var holder = d.oralQuestions[0].oralQuestions.to
+                if(!holder) return 0;
+                const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
+              
+                var sum = sumValues(holder)
+              
+                return sum
+                }).reduce(function(a,b) {return a + b})
+
+
+                return b
+
+
+       }
+
             for(let i = 0; i < parties.length; i++) {
 
 
@@ -187,8 +254,12 @@ useEffect(() => {
             this.totalOriginalTweets = this.TDs.map(d => d.retweetData[currentWeekIndex].original_tweets).reduce(function(a, b) {return a + b})
             this.TDAmount = this.TDs.length
             this.followersToTDs = (this.TDs.map(d => d.followerData[currentWeekIndex].followers).reduce(function(a, b) {return a + b}) / this.TDAmount)
-            this.retweetsToFollowers = retweetsToFollowersFunc(i)
+            this.followerEngagementRate = followerEngagementRateFunc(i)
             this.retweetsToOriginalTweets = retweetsToOriginalTweetsFunc(i)
+            this.writtenQuestionsAsked = writtenQuestionsAsked(i)
+            this.oralQuestionsAsked = oralQuestionsAsked(i)
+            this.writtenQuestionsAskedAverage = writtenQuestionsAsked(i) / this.TDs.length;
+            this.oralQuestionsAskedAverage = oralQuestionsAsked(i) / this.TDs.length
         }
 
         partyArr.push(new partyObj())
@@ -318,9 +389,13 @@ useEffect(() => {
           <MenuItem value={2}>Original Tweets</MenuItem>
           <MenuItem value={3}>TDs on Twitter</MenuItem>
           <MenuItem value={4}>Avg Followers</MenuItem>  
-          <MenuItem value={5}>Followers per Retweet </MenuItem>       
+          <MenuItem value={5}>Follower Engagement Rate </MenuItem>       
           <MenuItem value={6}>Retweets per Original Tweet</MenuItem>     
           <ListSubheader>Parliamentary Data (Coming Soon)</ListSubheader>
+          <MenuItem value={7}>Written Questions Asked</MenuItem> 
+          <MenuItem value={8}>Oral Questions Asked</MenuItem> 
+          <MenuItem value={9}>Average Written Questions Asked by TD</MenuItem> 
+          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem> 
           <MenuItem disabled>Motions Tabled</MenuItem>
           <MenuItem disabled>Questions Asked</MenuItem>
           <ListSubheader>News Data (Coming Soon)</ListSubheader>
@@ -342,6 +417,10 @@ useEffect(() => {
           <MenuItem value={5}>Followers per Retweet </MenuItem>       
           <MenuItem value={6}>Retweets per Original Tweet</MenuItem>     
           <ListSubheader>Parliamentary Data (Coming Soon)</ListSubheader>
+          <MenuItem value={7}>Written Questions Asked</MenuItem> 
+          <MenuItem value={8}>Oral Questions Asked</MenuItem> 
+          <MenuItem value={9}>Average Written Questions Asked by TD</MenuItem> 
+          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem> 
           <MenuItem disabled>Motions Tabled</MenuItem>
           <MenuItem disabled>Questions Asked</MenuItem>
           <ListSubheader>News Data (Coming Soon)</ListSubheader>

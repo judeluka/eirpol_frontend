@@ -40,14 +40,14 @@ const ScatterplotParty = ({data}) => {
 
 
 
-    const [TDDataScatter, setTDDataScatter] = useState(data)
+    const [TDDataScatter, setTDDataScatter] = useState(null)
+    const [filteredTDData, setFilteredTDData] = useState(null)
+
     const [partySelect, setPartySelect] = useState(["Sinn Féin", "Fine Gael", "Fianna Fáil", "Labour Party", "Green Party", "Solidarity - People Before Profit", "Aontú", "Social Democrats", "Independent", "Independents 4 Change"])
     const [xOption, setXOption] = useState(0)
     const [yOption, setYOption] = useState(1)
     const [rOption, setROption] = useState(0)
-    const [filteredTDData, setFilteredTDData] = useState(null)
-
-
+    
 
 
  
@@ -57,14 +57,14 @@ const ScatterplotParty = ({data}) => {
     const original_tweets = d => d.totalOriginalTweets
     const polarity = d => d.polAvg
     const subjectivity = d => d.subAvg
-    const followersPerRetweet = d => d.followersPerRetweet
+    const followerEngagementRate = d => d.followerEngagementRate
     const retweetsPerOriginalTweet = d => d.retweetsPerOriginalTweet
     const avgOriginalTweets = d => d.avgOriginalTweets
     const avgFollowers = d => d.avgFollowers
     const avgRetweets = d => d.avgRetweets
     const TDsOnTwitter = d=> d.TDAmount
     
-    const optionsFunctions = [followers, retweets, original_tweets, polarity, subjectivity, followersPerRetweet, retweetsPerOriginalTweet, avgOriginalTweets, avgFollowers, avgRetweets, TDsOnTwitter]
+    const optionsFunctions = [followers, retweets, original_tweets, polarity, subjectivity, followerEngagementRate, retweetsPerOriginalTweet, avgOriginalTweets, avgFollowers, avgRetweets, TDsOnTwitter]
 
     const xValue = optionsFunctions[xOption]
     const yValue = optionsFunctions[yOption]
@@ -72,32 +72,23 @@ const ScatterplotParty = ({data}) => {
 
     useEffect(() => {
 
-        setTDDataScatter(data)
+        setTDDataScatter(data.filter(function(d) {
+          
+          if(d.followerData[0] != undefined) {
+          return d
+        }
+      }
+      ))
         setFilteredTDData(TDDataScatter)
 
     }, [])
-
-
-  function getTDsFromApiAsync() {
-  return fetch("https://api.oireachtas.ie/v1/members?date_start=1900-01-01&chamber_id=&date_end=2099-01-01&limit=50")
-  .then((response) => response.json())
-  .then((responseJson) => {
-    return responseJson.movies;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-}
-
-
-console.log(getTDsFromApiAsync())
 
   const wrapperRef = useRef()
   const svgRef = useRef()
 
     const options = [
 
-        "Followers", "Retweets", "Original Tweets", "Polarity", "Subjectivity", "Followers Per Retweet", "Retweets Per Original Tweet", "Avg. Original Tweets (Activity)", "Avg. Followers", "Avg. Retweets", "TDs on Twitter"
+        "Followers", "Retweets", "Original Tweets", "Polarity", "Subjectivity", "Follower Engagement Rate", "Retweets Per Original Tweet", "Avg. Original Tweets (Activity)", "Avg. Followers", "Avg. Retweets", "TDs on Twitter"
         ]
 
     const optionsExplanation = [
@@ -182,13 +173,6 @@ console.log(getTDsFromApiAsync())
     
     const height = 620 - margin.left - margin.right;
     const width = 820 - margin.top - margin.bottom;        
-    
-
-
-
-
-  
-
 
     useEffect(() => {
 
@@ -225,7 +209,7 @@ console.log(getTDsFromApiAsync())
           return ratio 
   
          }
-         function followersPerRetweet(i) {
+         function followerEngagementRate(i) {
 
           var a = filteredTDData.map(function(d) {
               if(parties[i] === d.party) {
@@ -237,7 +221,7 @@ console.log(getTDsFromApiAsync())
   
           var follows = a.map(d => d.followerData[2].followers).reduce(function(a, b) {return a + b})
           var retweets = a.map(d => d.retweetData[2].retweets).reduce(function(a, b) {return a + b})
-          var ratio = follows / retweets
+          var ratio = retweets / follows
   
           if(ratio === Infinity) {
               ratio = 0
@@ -269,7 +253,7 @@ console.log(getTDsFromApiAsync())
             this.TDAmount = this.TDs.length
             this.polAvg = this.TDs.map(d => d.sentimentData[2].polarity).reduce(function(a, b) {return a + b}) / this.TDAmount
             this.subAvg = this.TDs.map(d => d.sentimentData[2].subjectivity).reduce(function(a, b) {return a + b}) / this.TDAmount
-            this.followersPerRetweet = followersPerRetweet(i)
+            this.followerEngagementRate = followerEngagementRate(i)
             this.retweetsPerOriginalTweet = retweetsPerOriginalTweet(i)
             this.avgFollowers = this.totalFollows / this.TDAmount
             this.avgRetweets = this.totalRetweets / this.TDAmount

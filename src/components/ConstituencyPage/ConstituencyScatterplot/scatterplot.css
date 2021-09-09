@@ -1,3 +1,4 @@
+
 .chart-container {
 
 margin: 10px;
@@ -10,4 +11,20 @@ text-align: center;
 .scroll-svg-container {
 
     overflow: auto;
+
+}
+
+.chart-container {
+
+margin: 10px;
+padding: 10px;
+color: white;
+text-align: center;
+
+}
+
+.scroll-svg-container {
+
+    overflow: auto;
+
 }

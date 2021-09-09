@@ -30,6 +30,14 @@ const TopicsBarChart = ({data}) => {
     const [mostAskedTopicsTotal, setMostAskedTopicsTotal] = useState(null);
     const [dataOption, setDataOption] = useState(0);
     const [colorOption, setColorOption] = useState(0)
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [height, setHeight] = useState(600)
+    const [width, setWidth] = useState(900)
+    const [colorMode, setColorMode] = useState("Light Mode")
+    const [color, setColor] = useState(null)
+    const [fillColor, setFillColor] = useState(null)
+    const [backgroundColor, setBackgroundColor] = useState(null)
+    const [textColor, setTextColor] = useState(null)
 
     // const [dataLength, setDataLength] = useState(0)
 
@@ -45,6 +53,113 @@ const TopicsBarChart = ({data}) => {
         "Social Democrats": "#752F8B",
         "Aontú": "#44532A",
         "Independents 4 Change": "grey"}
+
+
+        function getWindowDimensions() {
+            const { innerWidth: width, innerHeight: height } = window;
+            return {
+              width,
+              height
+            };
+          }
+      
+          function useWindowDimensions() {
+           
+          
+            useEffect(() => {
+              function handleResize() {
+                setWindowDimensions(getWindowDimensions());
+              }
+          
+              window.addEventListener('resize', handleResize);
+              return () => window.removeEventListener('resize', handleResize);
+            }, []);
+          
+            return windowDimensions;
+          }
+      
+          console.log(useWindowDimensions())
+      
+          const onChangeColorMode = (event, child) => {
+      
+            if(child == true) {
+      
+            setColorMode("Dark Mode")
+            } 
+            if(child == false) {
+              setColorMode("Light Mode")
+            }
+            
+            console.log('color mode:' + event.target.value);
+            console.log(child);
+      };
+
+      useEffect(() => {
+
+
+
+        if(windowDimensions.width < 500) {
+          setHeight(320)
+          setWidth(340)
+        }
+        if(windowDimensions.width < 400 && windowDimensions.width > 360) {
+          setHeight(320)
+          setWidth(340)
+        }
+        if(windowDimensions.width < 470 && windowDimensions.width > 400) {
+          setHeight(320)
+          setWidth(380)
+        }
+        if(windowDimensions.width < 680 && windowDimensions.width > 470) {
+          setHeight(360)
+          setWidth(480)
+        }
+        if(windowDimensions.width < 800 && windowDimensions.width > 600) {
+          setHeight(400)
+          setWidth(680)
+        }
+        if(windowDimensions.width < 980 && windowDimensions.width > 800) {
+          setHeight(500)
+          setWidth(680)
+        }
+        if(windowDimensions.width < 1080 && windowDimensions.width > 980) {
+          setHeight(600)
+          setWidth(700)
+        }
+        if(windowDimensions.width < 1200 && windowDimensions.width > 1080) {
+          setHeight(600)
+          setWidth(800)
+        }
+        if(windowDimensions.width > 1200) {
+          setHeight(600)
+          setWidth(900)
+        }
+      }, [windowDimensions])
+      
+      
+          useEffect(() => {
+      
+      
+            console.log(colorMode)
+            
+                  if(colorMode == "Dark Mode") {
+                    setFillColor({fill: "white", color: "white"})
+                    setColor({color: "white"})
+                    setBackgroundColor("#191C24")
+                    setTextColor("white")
+            
+                  }
+            
+                  if(colorMode == "Light Mode") {
+                    setFillColor({fill: "black", color: "black"})
+                    setColor({color: "black"})
+                    setBackgroundColor("white")
+                    setTextColor("black")
+                  }
+            
+                  
+            
+                }, [colorMode])
 
 
     const tooltipData = ["TD's Who Asked", "Total Questions Asked",]
@@ -163,10 +278,10 @@ function topicWrittenTotal() {
 }, [TDData])
 
 
-const margin = {top: 20, right: 20, bottom: 120, left: 70}
+const margin = {top: 20, right: 20, bottom: 100, left: 70}
 
-const height = 600
-const width = 900
+const heightMargin = height - margin.left - margin.right;
+const widthMargin = width - margin.top - margin.bottom;  
 
 const svgRef= useRef()
 
@@ -406,14 +521,14 @@ console.log(coloredByPartyWithTDWhoHasContributedMostToTopic("Covid-19 Pandemic"
 
     const xScale = d3.scaleBand()
     .domain(dataOptionArr[dataOption].map(xValue))
-    .range([0, width])
+    .range([0, widthMargin])
     .padding(0.2)
 
     const svg = d3.select(svgRef.current);
 
 const yScale = d3.scaleLinear()
 .domain([0, d3.max(dataOptionArr[dataOption], yValue)])
-.range([height, 0]);
+.range([heightMargin, 0]);
 
 
 
@@ -423,11 +538,11 @@ const xAxis = d3.axisBottom(xScale).ticks(dataOptionArr[dataOption].length)
 
 svg
 .select(".x-axis-topics-bar")
-.attr("transform", "translate(0," + 600 + ")")
+.attr("transform", "translate(0," + heightMargin + ")")
 .transition(2000)
 .call(xAxis)
 .selectAll("text")  
-.style("text-anchor", "end")
+.attr("font-size", "1px")
 .attr("dx", "-.8em")
 .attr("dy", ".15em")
 .attr("transform", "rotate(-25)");
@@ -469,7 +584,7 @@ rects.transition()
 .attr("x", d => xScale(xValue(d)))
 .attr("y", d => yScale(yValue(d)))
 .attr("width", xScale.bandwidth())
-.attr("height", d => 600 - yScale(yValue(d)))
+.attr("height", d => heightMargin - yScale(yValue(d)))
 .attr("fill", d=> color(d)[0])
 
 
@@ -540,7 +655,7 @@ else {
     d3.select(this).transition().attr('fill', d => color(d)[0]);
 }); 
 
-}, [mostAskedTopicsByTD, mostAskedTopicsTotal, dataOption, colorOption])
+}, [mostAskedTopicsByTD, mostAskedTopicsTotal, dataOption, colorOption, height, width, colorMode])
 
 if(!TDData || !totalQuestions ||!oralQuestions || !writtenQuestions || !mostAskedTopicsByTD || !mostAskedTopicsTotal) return null;
 
@@ -575,7 +690,7 @@ if(!TDData || !totalQuestions ||!oralQuestions || !writtenQuestions || !mostAske
         </Select>
       </FormControl> */}
             <div className={"scroll-svg-container"}>
-            <svg ref={svgRef} height={height + margin.top + margin.bottom} width={width + margin.left + margin.right}>
+            <svg ref={svgRef} height={heightMargin + margin.top + margin.bottom} width={widthMargin + margin.left + margin.right}>
             <g id="container-topics" transform={'translate(' + margin.left + ',' + margin.top + ')'}>
                 <g className="x-axis-topics-bar"></g>
                 <g className="y-axis-topics-bar"></g>

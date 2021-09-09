@@ -1,5 +1,6 @@
 .featuredItem {
     background-color: #191C24;
+    /* background-image: linear-gradient(to right, #191C24 0%, #1c212b 100%); */
     flex: 1;
     padding: 30px;
     margin: 10px 20px;

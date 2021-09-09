@@ -28,7 +28,6 @@ const Footer = () => {
 <div id="footer" style={{textAlign: "center", background: "#004D44", position: "absolute", width: "100%", height: "100px", alignItems: "center", display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  marginTop: "20px",
   paddingTop: "40px",
   paddingBottom: "50px"}}>
     <Grid container justifyContent="center" alignItems="center" style={{height: "height"}}>

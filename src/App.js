@@ -11,6 +11,14 @@ import { axisBottom } from "d3";
 import axios from 'axios'
 import { Component } from "react";
 import Footer from "./components/Footer/Footer";
+import ConstituencyDashboard from "./components/ConstituencyDashboard/ConstituencyDashboard";
+import ConstituencyPage from "./components/ConstituencyPage/ConstituencyPage";
+import Homepage from "./components/Homepage/Homepage";
+import ConstituencyScatterplot from "./components/ConstituencyPage/ConstituencyScatterplot/ConstituencyScatterplot";
+import ScatterplotConstituency from "./components/ConstituencyDashboard/ScatterplotConstituency/ScatterplotConstituency";
+import TopicsBarChart from "./components/Dashboard/Issues/TopicsBarChart";
+import TotalAndAverageConstituencyMap from "./components/ConstituencyDashboard/TotalAndAverageConstituencyMap";
+import LinechartPage from "./components/LinechartPage/LinechartPage";
 
 
 const Content = () => <h1>Content</h1>;
@@ -41,7 +49,6 @@ function App() {
   return (
     <div className="App">
       <Router>
-
         <Navbar/>
           {/* improvememt, not recorded in video, its just looping through menuItems
           instead of hard coding all the routes */}
@@ -61,15 +68,37 @@ function App() {
           ))} */}
 
           <Switch>
-            <Route exact path={"/"}>
+            <Route exact path={"/home"}>
               <Dashboard data={TDData}/>
+            </Route>            
+            <Route exact path="/Constituencies">
+              <ConstituencyDashboard data={TDData}/>
             </Route>
-            <Route path="/TDs">
+            <Route exact path="/TDs">
             <TDList data={TDData}/>
             </Route>
-            <Route path="/:TD">
+            <Route exact path="/TDs/:TD">
               <TDPage data={TDData}/>
             </Route>
+            <Route exact path="/Constituencies/:Constituency">
+              <ConstituencyPage data={TDData}/>
+            </Route>
+            <Route exact path="/">
+              <Homepage data={TDData}/>
+            </Route>
+            <Route path="Scatterplots/Constituencies">
+              <ScatterplotConstituency data={TDData}/>
+            </Route>
+            <Route exact path="Barcharts/Topics">
+              <TopicsBarChart data={TDData}/>
+            </Route>
+            <Route exact path="Maps/Total-Average">
+              <TotalAndAverageConstituencyMap data={TDData}/>
+            </Route>
+            <Route exact path="Linecharts">
+              <LinechartPage data={TDData}/>
+            </Route>
+
           </Switch>
       </Router>
       <Footer>  

@@ -19,10 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-
-
 const Issues = ({data}) => {
-
 
     const [TDData, setTDData] = useState(null);
     const [totalQuestions, setTotalQuestions] = useState(null);
@@ -33,7 +30,6 @@ const Issues = ({data}) => {
     const [mostAskedToByTD, setMostAskedToByTD] = useState(null);
     const [mostAskedToTotal, setMostAskedToTotal] = useState(null);
     const [dataOption, setDataOption] = useState(2);
-
 
 
     // const [dataLength, setDataLength] = useState(0)
@@ -104,15 +100,7 @@ useEffect(() => {
     var filteredOral = toOral.filter(d => d != undefined)
     var summedOral = filteredOral.map(d => sumValues(d)).reduce((a, b) => a + b);
 
-
     var toWritten = TDData.map(d => d.writtenQuestions[0].writtenQuestions.to)
-
-
-
-
-
-
-
 
     //Who didn't ask any questions in period, minus ministers, minus cc and eoghan murphy
     var whoDidnt = TDData.map(function(d){

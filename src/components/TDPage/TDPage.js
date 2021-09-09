@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import TDHeader from './TDHeader'
-import {TDActivityStats, TDConnectivityGauge, TDFollowerStats, TDInterests, TDQuestionsAskedTo, TDRetweetStats, TDSentimentGauge, TDTwitterActivity } from './TDStats'
+import {TDActivityStats, TDConnectivityGauge, TDFollowerStats, TDInterests, TDPolarityStats, TDQuestionsAskedTo, TDQuestionsTowardsTopic, TDRetweetStats, TDSentimentGauge, TDSubjectivityStats, TDTwitterActivity } from './TDStats'
 import { Avatar, Grid, Typography } from '@material-ui/core'
 import './tdpage.css'
 import { useParams } from 'react-router'
@@ -10,6 +10,7 @@ import TDLineChartRetweets from './TDLineChartRetweets/TDLineChartRetweets'
 import TDLineChartActivity from './TDLineChartActivity/TDLineChartActivity'
 import TDLineChartPolarity from './TDLineChartPolarity/TDLineChartPolarity'
 import TDLineChartSubjectivity from './TDLineChartSubjectivity/TDLineChartSubjectivity'
+import { TDTopicBarchart } from './TDTopicBarchart'
 
 const TDPage = ({data}) => {
 
@@ -62,8 +63,6 @@ let tdParty = thisTDData[0].party
 
 let just = TDData.filter(d => d.party == tdParty)
 
-console.log(thisTDData)
-
 setThisTDPartyData(just)
 
 }, [TDData, thisTDData])
@@ -76,17 +75,34 @@ setThisTDPartyData(just)
 
     return (
 
-
+        <div style={{background: "white"}}>
         <Grid container xs={12}>               
         <Grid item xs={12}>
                 <TDHeader justThisTDData={thisTDData}/>
-            </Grid>            
+            </Grid>    
+        
             <Grid item xs={12} sm={6}>
                 <TDInterests justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData} />
-            </Grid>  
+            </Grid>            
+            {/* <Grid item xs={12} sm={6}>
+                <TDQuestionsTowardsTopic justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData} />
+            </Grid>    */}
             <Grid item xs={12} sm={6}>
                 <TDQuestionsAskedTo justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData} />
-            </Grid>             
+            </Grid>  
+            <Grid item xs={12} >
+                <TDTopicBarchart justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData} />
+            </Grid>  
+            
+            <Grid item xs={12} sm={6}>
+                <TDPolarityStats justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
+            </Grid>            
+            <Grid item xs={12} sm={6}>
+                <TDSubjectivityStats justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
+            </Grid>            
+            <Grid item xs={12}>
+                <TDLineChartPolarity justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
+            </Grid>              
             <Grid item xs={12} sm={4}>
                 <TDFollowerStats justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
             </Grid>
@@ -106,15 +122,12 @@ setThisTDPartyData(just)
             <Grid item xs={12}>
                 <TDLineChartActivity justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
             </Grid>
-            <Grid item xs={12}>
-                <TDLineChartPolarity justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
-            </Grid>
+
             <Grid item xs={12}>
                 <TDLineChartSubjectivity justThisTDData={thisTDData} justThisTDPartyData={thisTDPartyData}  allTDData={TDData}/>
-            </Grid>
-
-            
+            </Grid>   
         </Grid>
+        </div>
     )
 }
 

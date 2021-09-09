@@ -26,6 +26,8 @@ import MultilineAppV3PartySubjectivity from './MultilineChartV3PartySubjectivity
 import ComingSoon from './ComingSoon'
 import Welcome from './Welcome/Welcome'
 import Issues from './Issues/Issues'
+import StreamGraphPolarity from './StreamGraphPolarity/StreamGraphPolarity'
+import StreamGraphSubjectivity from './StreamGraphSubjectivity/StreamGraphSubjectivity'
 
 
 
@@ -101,7 +103,14 @@ console.log(data)
             </Grid>    
             <Grid item xs={12} sm={4}>
                 <MostActiveTD data={TDData}/>
-            </Grid>       
+            </Grid>     
+            
+            <Grid item xs={12} sm={12}>
+            <StreamGraphPolarity data={TDData}/>
+            </Grid>  
+            <Grid item xs={12} sm={12}>
+            <StreamGraphSubjectivity data={TDData}/>
+            </Grid> 
 
             <Grid item xs={12} sm={6}>
             <DailSentimentGauge data={TDData}/>

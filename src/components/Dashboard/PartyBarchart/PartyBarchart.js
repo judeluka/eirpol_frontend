@@ -55,11 +55,19 @@ export const PartyBarchart = ({data}) => {
     const oralQuestionsAsked = d => d.oralQuestionsAsked
     const writtenQuestionsAskedAverage = d=> d.writtenQuestionsAskedAverage
     const oralQuestionsAskedAverage = d=> d.oralQuestionsAskedAverage
+    const totalAbsences = d => d.totalAbsences
+    const totalPresences = d => d.totalPresences
+    const averageAbsences = d => d.averageAbsences
+    const averagePresences = d => d.averagePresences
+    const totalTimesOnWinningSide = d => d.totalTimesOnWinningSide
+    const totalTimesOnLosingSide = d => d.totalTimesOnLosingSide
+    const averageTDTimeOnWinningSide = d => d.averageTDTimeOnWinningSide
+    const averageTDTimeOnLosingSide = d => d.averageTDTimeOnLosingSide
 
 
     const optionsFunctions = 
     
-    [ followers, retweets, originalTweets, TDAmount, TDFollowerAvg, followerEngagementRate, retweetsToOriginalTweetsFunc,  writtenQuestionsAsked, oralQuestionsAsked, writtenQuestionsAskedAverage, oralQuestionsAskedAverage]
+    [ followers, retweets, originalTweets, TDAmount, TDFollowerAvg, followerEngagementRate, retweetsToOriginalTweetsFunc,  writtenQuestionsAsked, oralQuestionsAsked, writtenQuestionsAskedAverage, oralQuestionsAskedAverage, totalAbsences, totalPresences, averageAbsences, averagePresences, totalTimesOnWinningSide, totalTimesOnLosingSide, averageTDTimeOnWinningSide, averageTDTimeOnLosingSide]
 
 
     const classes = useStyles();
@@ -72,7 +80,7 @@ export const PartyBarchart = ({data}) => {
     const [secOption, setSecOption] = useState(1)
 
 
-    const margin = {top: 20, right: 20, bottom: 20, left: 60}
+    const margin = {top: 20, right: 20, bottom: 100, left: 60}
 
     const height = 600
     const width = 1020
@@ -260,6 +268,14 @@ useEffect(() => {
             this.oralQuestionsAsked = oralQuestionsAsked(i)
             this.writtenQuestionsAskedAverage = writtenQuestionsAsked(i) / this.TDs.length;
             this.oralQuestionsAskedAverage = oralQuestionsAsked(i) / this.TDs.length
+            this.totalAbsences = this.TDs.map(d => d.voteData[0].absences).reduce(function(a, b) {return a + b})
+            this.totalPresences = this.TDs.map(d => d.voteData[0].totalVotes).reduce(function(a, b) {return a + b})
+            this.averageAbsences = this.TDs.map(d => d.voteData[0].absences).reduce(function(a, b) {return a + b}) / this.TDs.length
+            this.averagePresences = this.TDs.map(d => d.voteData[0].totalVotes).reduce(function(a, b) {return a + b}) / this.TDs.length
+            this.totalTimesOnWinningSide = this.TDs.map(d => d.voteData[0].onWinningSide).reduce(function(a, b) {return a + b})
+            this.totalTimesOnLosingSide = this.TDs.map(d => d.voteData[0].onLosingSide).reduce(function(a, b) {return a + b})
+            this.averageTDTimeOnWinningSide = this.TDs.map(d => d.voteData[0].onWinningSide).reduce(function(a, b) {return a + b}) / this.TDs.length
+            this.averageTDTimeOnLosingSide = this.TDs.map(d => d.voteData[0].onLosingSide).reduce(function(a, b) {return a + b}) / this.TDs.length
         }
 
         partyArr.push(new partyObj())
@@ -301,7 +317,12 @@ useEffect(() => {
             .select(".x-axis")
             .attr("transform", "translate(0," + 600 + ")")
             .transition(2000)
-            .call(xAxis);
+            .call(xAxis)
+            .selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-25)");
 
         const yAxis = d3.axisLeft(yScale);
 
@@ -395,7 +416,15 @@ useEffect(() => {
           <MenuItem value={7}>Written Questions Asked</MenuItem> 
           <MenuItem value={8}>Oral Questions Asked</MenuItem> 
           <MenuItem value={9}>Average Written Questions Asked by TD</MenuItem> 
-          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem> 
+          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem>
+          <MenuItem value={11}>Total Vote Absences</MenuItem> 
+          <MenuItem value={12}>Total Vote Presences</MenuItem>  
+          <MenuItem value={13}>Average Vote Absences</MenuItem> 
+          <MenuItem value={14}>Average Vote Presences</MenuItem>  
+          <MenuItem value={15}>Total Times On Winning Side</MenuItem> 
+          <MenuItem value={16}>Total Times On Losing Side</MenuItem> 
+          <MenuItem value={17}>Average Times On Winning Side</MenuItem> 
+          <MenuItem value={18}>Average Times On Losing Side</MenuItem> 
           <MenuItem disabled>Motions Tabled</MenuItem>
           <MenuItem disabled>Questions Asked</MenuItem>
           <ListSubheader>News Data (Coming Soon)</ListSubheader>
@@ -420,7 +449,8 @@ useEffect(() => {
           <MenuItem value={7}>Written Questions Asked</MenuItem> 
           <MenuItem value={8}>Oral Questions Asked</MenuItem> 
           <MenuItem value={9}>Average Written Questions Asked by TD</MenuItem> 
-          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem> 
+          <MenuItem value={10}>Average Oral Questions Asked by TD</MenuItem>
+          <MenuItem value={11}>Total Absences</MenuItem>  
           <MenuItem disabled>Motions Tabled</MenuItem>
           <MenuItem disabled>Questions Asked</MenuItem>
           <ListSubheader>News Data (Coming Soon)</ListSubheader>

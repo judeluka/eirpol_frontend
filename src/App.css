@@ -285,3 +285,16 @@ body{
 
 
 }
+
+.textblob-link:visited {
+
+  color: #fff ;
+
+
+
+}
+
+.textblob-link:hover {
+
+  color: lightgreen
+}

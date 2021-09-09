@@ -112,11 +112,11 @@ if(thisTDData.member_offices[0].length != 0) {
     return (
 
 
-        <div className="td-header">
+        <div className="td-header" style={{color: 'black', background: "white"}}>
             <Grid container direction="column" alignItems="center"><Typography variant="h4">{name}</Typography>
             <Avatar variant="" src={member_uri + "/image/large"} style={{height: '150px', width: '150px', marginBottom: '20px', marginTop: '10px'}}/>
             <Typography variant="h5">{thisTDData.party}<span class={"party-dot-" + partyDot}/></Typography>
-            <Typography variant="h5">{constituency}</Typography>
+            <Typography variant="h5"><a href={"/Constituencies/" + constituency }>{constituency}</a></Typography>
             <Typography variant="h5">{office.toString().replaceAll(',', ' & ')}</Typography>
             </Grid>
         </div>

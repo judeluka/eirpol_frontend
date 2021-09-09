@@ -27,6 +27,31 @@ export default function TDLineChartActivity ({justThisTDData, justThisTDPartyDat
   const [thisTDPartyData, setThisTDPartyData] = useState(null)
   const [dailData, setDailData] = useState(null)
 
+  const partyColors = {
+    "Sinn Féin": "#326760",
+    "Fine Gael": "#6699FF",
+    "Fianna Fáil": "#66BB66",
+    "Labour Party": "#CC0000",
+    "Solidarity - People Before Profit": "#8E2420",
+    "Independent": "white",
+    "Green Party": "#99CC33",
+    "Social Democrats": "#752F8B",
+    "Aontú": "#44532A",
+    "Independents 4 Change": "grey"}
+
+    const tdPartyColors = {
+
+      "Sinn Féin": "#4b9b90",
+      "Fine Gael": "#b3ccff",
+      "Fianna Fáil": "#9bd39b",
+      "Labour Party": "#ff1a1a",
+      "Solidarity - People Before Profit": "#b82f29",
+      "Independent": "#d9d9d9",
+      "Green Party": "#b8db70",
+      "Social Democrats": "#a346c0",
+      "Aontú": "#84a152",
+      "Independents 4 Change": "#a6a6a6"
+    }
 
   useEffect(() => {
 
@@ -40,7 +65,7 @@ useEffect(() => {
 
   if(!thisTDData) return null;
 
-  setSelectedItems([thisTDData[0].name])
+  setSelectedItems([thisTDData[0].name, "Dáil Average", "Party Average"])
 
 }, [thisTDData])
 
@@ -242,7 +267,7 @@ const getDate = (d) => {
 
 const thisTDDataMap = {
   name: thisTDData[0].name,
-  color: "#6699FF",
+  color: tdPartyColors[thisTDData[0].party],
   items: getTDObj().map((d) => ({ ...d, date: getDate(d)}))
 };
 
@@ -254,7 +279,7 @@ const dailMeanDataMap = {
 
 const partyMeanDataMap = {
   name: "Party Average",
-  color: "green",
+  color: partyColors[thisTDData[0].party],
   items: getPartyObj().map((d) => ({ ...d, date: getDate(d)}))
 }
 
@@ -271,7 +296,7 @@ const legendData = [thisTDDataMap, dailMeanDataMap, partyMeanDataMap];
 
   return (
   <div className="featuredItem" style={{textAlign: "center"}}>
-    <Typography variant="h5">Activity (Original Tweets)</Typography>
+    <Typography variant="h5">Original Tweets</Typography>
       <Legend
         data={legendData}
         selectedItems={selectedItems}

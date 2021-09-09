@@ -89,7 +89,7 @@ const TDList = ({data}) => {
     console.log(trueArr)
 
         return (<div>
-        <ListItem style={{background: backgroundColor}} button component="a" href={"/" + d.name.replace(' ', '-')}>
+        <ListItem style={{background: backgroundColor}} button component="a" href={"/TDs/" + d.name.replace(' ', '-')}>
              <span title={d.party} class={"party-dot-" + partyDot} style={{marginRight: 10}}/><ListItemAvatar>
             <Avatar src={d.member_uri[0] + "/image/large"}/>
             </ListItemAvatar>

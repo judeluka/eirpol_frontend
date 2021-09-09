@@ -37,6 +37,17 @@ function Navbar() {
                 TD List
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                exact
+                to="/Constituencies"
+                activeClassName="active"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                Constituency Map
+              </NavLink>
+            </li>
             {/* <li className="nav-item">
               <NavLink
                 exact

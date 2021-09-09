@@ -161,6 +161,7 @@ export const MostRetweetedTD = ({data}) => {
 
        })
 
+
     return (
 
 
@@ -168,7 +169,7 @@ export const MostRetweetedTD = ({data}) => {
             <span className="featuredSub">Most Retweets this week</span>
         <Grid container xs={12} alignItems="center">
         <Grid item>
-        <Avatar  src="https://data.oireachtas.ie/ie/oireachtas/member/id/John-Brady.D.2016-10-03/image/large"/>
+        <Avatar  src={mostRetweetsTD[0].member_uri[0] + "/image/large"}/>
         </Grid>
         <Grid item >
         <span className="featuredTitle">{mostRetweetsTD[0].name}</span><span class="party-dot-sf"/>
@@ -229,7 +230,7 @@ export const MostActiveTD = ({data}) => {
             <span className="featuredSub">Most Active this week (Original Tweets)</span>
         <Grid container xs={12} alignItems="center">
         <Grid item>
-        <Avatar  src="https://data.oireachtas.ie/ie/oireachtas/member/id/Ciaran-Cannon.S.2007-07-23/image/large"/>
+        <Avatar  src={mostRetweetsTD[0].member_uri[0] + "/image/large"}/>
         </Grid>
         <Grid item >
         <span className="featuredTitle">{mostRetweetsTD[0].name}</span><span class="party-dot-fg"/>
@@ -297,7 +298,7 @@ export const MostNegativeTD = ({data}) => {
             <span className="featuredSub">Most Negative TD this Week</span>
         <Grid container xs={12} alignItems="center">
         <Grid item>
-        <Avatar  src="https://www.sinnfein.ie/files/images/orig/2014/paul-donnelly.jpg"/>
+        <Avatar  src={mostNegativeTD[0].member_uri[0] + "/image/large"}/>
         </Grid>
         <Grid item >
         <span className="featuredTitle">{mostNegativeTD[0].name}</span><span class="party-dot-sf"/>
@@ -366,7 +367,7 @@ export const MostPositiveTD = ({data}) => {
             <span className="featuredSub">Most Positive TD this Week</span>
         <Grid container xs={12} alignItems="center">
         <Grid item>
-        <Avatar  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Miche%C3%A1l_Martin_TD_%28cropped%29.jpg/1200px-Miche%C3%A1l_Martin_TD_%28cropped%29.jpg"/>
+        <Avatar  src={mostPositiveTD[0].member_uri[0] + "/image/large"}/>
         </Grid>
         <Grid item >
         <span className="featuredTitle">{mostPositiveTD[0].name}</span><span class="party-dot-ff"/>
@@ -386,11 +387,6 @@ export const MostPositiveTD = ({data}) => {
 
 )
 }
-
-
-
-
-
 
 export const DailTotal = ({data}) => {
 
@@ -422,7 +418,6 @@ export const DailTotal = ({data}) => {
 
     }, [TDData])
 
-
     
 
     useEffect(() => {
@@ -435,17 +430,7 @@ export const DailTotal = ({data}) => {
             return a + b
         })
 
-        setTotal(total)
-        console.log(total)
-
-
-
-
-        
-     // return d3.descending(a.totalFollowers, b.totalFollowers)
-            
-                 
-        
+        setTotal(total)   
         
         const TDDataHolder = TDData;
 

@@ -1,7 +1,8 @@
 import * as d3 from 'd3'
 import React from 'react'
 import { useRef, useEffect, useState } from 'react'
-import { Typography, Checkbox, Select, MenuItem, ListSubheader, FormControl, InputLabel, makeStyles } from '@material-ui/core'
+import { Typography, Checkbox, FormControlLabel, Switch, Select, MenuItem, ListSubheader, FormControl, InputLabel, makeStyles } from '@material-ui/core'
+
 
 
 
@@ -25,7 +26,7 @@ const partyColors = {
     "Fianna Fáil": "#66BB66",
     "Labour Party": "#CC0000",
     "Solidarity - People Before Profit": "#8E2420",
-    "Independent": "white",
+    "Independent": "black",
     "Green Party": "#99CC33",
     "Social Democrats": "#752F8B",
     "Aontú": "#44532A",
@@ -35,147 +36,317 @@ const partyColors = {
 export const BarChart = ({data}) => {
 
 
+
+
     const options = [
 
-    "Followers", "Retweets", "Original Tweets", "Follower Engagement Rate", "Retweets Per Original Tweet", "Polarity", "Subjectivity", "Written Questions", "Oral Questions"
+    "Age", 
+    "Followers", 
+    "Retweets", 
+    "Original Tweets", 
+    "Followers Per Retweet", 
+    "Retweets Per Original Tweet", 
+    "Avg. Polarity", 
+    "Avg. Subjectivity", 
+
+    "Written Questions Asked", 
+    "Oral Questions Asked",
+    "No. of Topics TD had Questions for",
+    "Avg. Questions TD had towards Topic",
+
+
+    "Absences",
+    "Presences",
+    "Votes Yes",
+    "Votes No",
+    "Times on Winning Side",
+    "Times on Losing Side",
+    "Yes and Carried",
+    "Yes and Lost",
+    "No and Carried",
+    "No and Lost"
 
     ]
 
-    const followers = d => {
+const followers = d => {
 
-        if(d.followerData.length === 0) {
-          return 0
-        } else {
-          return d.followerData[currentWeekIndex].followers
-        }
-  
-      }
-      const retweets = d => {
-
-        if(d.retweetData.length === 0) {
-          return 0
-        } else {
-          return d.retweetData[currentWeekIndex].retweets
-        }
-  
-      }
-
-    const originalTweets = d => {
-
-      if(d.retweetData.length === 0) {
-        return 0
-      } else {
-        return d.retweetData[currentWeekIndex].original_tweets
-      }
-
+    if(d.followerData.length === 0) {
+      return 0
+    } else {
+      return d.followerData[currentWeekIndex].followers
     }
 
-    const followerEngagementRate = (d) => {
+  }
+const retweets = d => {
 
-      if(d.followerData.length === 0) {
-        return 0
-      } else {
-
-      
-
-
-      var f = d.followerData[currentWeekIndex].followers
-      var r = d.retweetData[currentWeekIndex].retweets 
- 
-      var test = ((r / f))
-
-      if(test === Infinity ) {
-
-          test = 0
-      
+  if(d.retweetData.length === 0) {
+    return 0
+  } else {
+    return d.retweetData[currentWeekIndex].retweets
   }
 
-  test = test ? test : 0;
-
-  return test
 }
-    }
+
+const originalTweets = d => {
+
+  if(d.retweetData.length === 0) {
+    return 0
+  } else {
+    return d.retweetData[currentWeekIndex].original_tweets
+  }
+
+}
+
+const followerEngagementRate = (d) => {
+
+  if(d.followerData.length === 0) {
+    return 0
+  } else {
+
+  
+
+
+  var f = d.followerData[currentWeekIndex].followers
+  var r = d.retweetData[currentWeekIndex].retweets 
+
+  var test = ((r / f))
+
+  if(test === Infinity ) {
+
+      test = 0
+  
+}
+
+test = test ? test : 0;
+
+return test
+}
+}
 const retweetsPerOriginalTweet = (d) => {
 
 
-      if(d.followerData.length === 0) {
-        return 0
-      } else {
+  if(d.followerData.length === 0) {
+    return 0
+  } else {
 
-      
+  
 
-      var r = d.retweetData[currentWeekIndex].retweets 
-      var o = d.retweetData[currentWeekIndex].original_tweets
+  var r = d.retweetData[currentWeekIndex].retweets 
+  var o = d.retweetData[currentWeekIndex].original_tweets
 
-      var test = r / o
+  var test = r / o
 
-      if(test === Infinity ) {
+  if(test === Infinity ) {
 
-          test = 0
-      
-  }
+      test = 0
+  
+}
 
-  test = test ? test : 0;
+test = test ? test : 0;
 
 
-  return test
+return test
 }
 }
 const polarity = d => {
 
-    if(d.sentimentData == undefined || d.sentimentData.length == 0) {
-      return 0
-    } else {
-      return d.sentimentData[currentWeekIndex].polarity
-    }
+if(d.sentimentData == undefined || d.sentimentData.length == 0) {
+  return 0
+} else {
+  return d.sentimentData[currentWeekIndex].polarity
+}
 
+}
+
+const subjectivity = d => {
+
+  if(d.sentimentData == undefined || d.sentimentData.length == 0) {
+    return 0
+  } else {
+    return d.sentimentData[currentWeekIndex].subjectivity
   }
 
-    const subjectivity = d => {
-
-      if(d.sentimentData == undefined || d.sentimentData.length == 0) {
-        return 0
-      } else {
-        return d.sentimentData[currentWeekIndex].subjectivity
-      }
 
 
+}
 
+const writtenQuestions = (d) => {
+
+
+    var holder = d.writtenQuestions[0].writtenQuestions.to
+    if(!holder) return 0;
+    const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
+
+    var sum = sumValues(holder)
+
+    return sum
+    
+}
+const oralQuestions = (d) => {
+
+
+    var holder = d.oralQuestions[0].oralQuestions.to
+    if(!holder) return 0;
+    const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
+
+    var sum = sumValues(holder)
+
+    return sum
+
+
+}
+const absences = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].absences
+  }
+}
+const presences = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].totalVotes
+  }
+}
+const totalYes = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].totalYes
+  }
+}
+const totalNo = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].totalNo
+  }
+}
+const onWinningSide = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].onWinningSide
+  }
+}
+const onLosingSide = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].onLosingSide
+  }
+}
+const yesAndCarried = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].yesAndCarried
+  }
+}
+const yesAndLost = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].yesAndLost
+  }
+}
+const noAndCarried = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].noAndCarried
+  }
+}
+const noAndLost = (d) => {
+  if(d.voteData.length === 0) {
+    return 0
+  } else {
+    return d.voteData[0].noAndLost
+  }
+}
+const numberOfTopics = (d) => {
+
+  if(!d.writtenQuestions[0].writtenQuestions.topic) return 0;
+
+  return Object.keys(d.writtenQuestions[0].writtenQuestions.topic).length  
+
+}
+const averageQuestionTowardsTopic = (d) => {
+
+  if(!d.writtenQuestions[0].writtenQuestions.topic) return 0;
+
+  var topics = Object.keys(d.writtenQuestions[0].writtenQuestions.topic).length  
+
+  var totalQuestions = writtenQuestions(d)
+
+  return totalQuestions / topics
+}
+const age = (d) => {
+
+  const getDate = (d) => { 
+    
+    let together = []
+    let apart = d.split('/')
+    let day = apart[0]
+    let month = apart[1]
+    let year = apart[2]
+  
+    together.push(month, day, year)
+    together.toString().replace(",","/").replace(",","/")
+    return new Date(together)
+  }
+    
+  if(!d.DOB) {
+
+  function calcAge() {
+      var birthday = +Date.now();
+      return ~~((Date.now() - birthday) / (31557600000));
     }
+    return calcAge()
+  }
+  
 
-    const writtenQuestions = (d) => {
+  function calcAge(date) {
+    var birthday = +getDate(date);
+    return ~~((Date.now() - birthday) / (31557600000));
+  }
 
+  return calcAge(d.DOB)
+    
 
-        var holder = d.writtenQuestions[0].writtenQuestions.to
-        if(!holder) return 0;
-        const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
-
-        var sum = sumValues(holder)
-
-        return sum
-        
-    }
-    const oralQuestions = (d) => {
-
-
-        var holder = d.oralQuestions[0].oralQuestions.to
-        if(!holder) return 0;
-        const sumValues = obj => Object.values(obj).reduce((a,b) => a + b) 
-
-        var sum = sumValues(holder)
-
-        return sum
-
-
-    }
-
-
+}
 
 
 
     const optionsFunctions =
 
-    [followers, retweets, originalTweets, followerEngagementRate, retweetsPerOriginalTweet, polarity, subjectivity, writtenQuestions, oralQuestions]
+    [ age,
+      followers, 
+      retweets, 
+      originalTweets, 
+      followerEngagementRate, 
+      retweetsPerOriginalTweet, 
+      polarity, 
+      subjectivity,
+
+      writtenQuestions, 
+      oralQuestions, 
+      numberOfTopics, 
+      averageQuestionTowardsTopic,
+
+      absences, 
+      presences, 
+      totalYes, 
+      totalNo, 
+      onWinningSide, 
+      onLosingSide, 
+      yesAndCarried, 
+      yesAndLost, 
+      noAndCarried, 
+      noAndLost, 
+ 
+      ]
 
 
     const classes = useStyles();
@@ -186,14 +357,124 @@ const polarity = d => {
     const [highlightOption, setHighlightOption] = useState(0)
     const [baseColorOption, setBaseColorOption] = useState(0)
     const [yOption, setYOption] = useState(0)
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [height, setHeight] = useState(600)
+    const [width, setWidth] = useState(900)
+    const [colorMode, setColorMode] = useState("Light Mode")
+    const [color, setColor] = useState(null)
+    const [fillColor, setFillColor] = useState(null)
+    const [backgroundColor, setBackgroundColor] = useState(null)
+    const [textColor, setTextColor] = useState(null)
+
+    function getWindowDimensions() {
+      const { innerWidth: width, innerHeight: height } = window;
+      return {
+        width,
+        height
+      };
+    }
+
+    function useWindowDimensions() {
+     
+    
+      useEffect(() => {
+        function handleResize() {
+          setWindowDimensions(getWindowDimensions());
+        }
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+    
+      return windowDimensions;
+    }
+
+    console.log(useWindowDimensions())
+
+    const onChangeColorMode = (event, child) => {
+
+      if(child == true) {
+
+      setColorMode("Dark Mode")
+      } 
+      if(child == false) {
+        setColorMode("Light Mode")
+      }
+      
+      console.log('color mode:' + event.target.value);
+      console.log(child);
+};
+
+
+    useEffect(() => {
+
+
+      console.log(colorMode)
+      
+            if(colorMode == "Dark Mode") {
+              setFillColor({fill: "white", color: "white"})
+              setColor({color: "white"})
+              setBackgroundColor("#191C24")
+              setTextColor("white")
+      
+            }
+      
+            if(colorMode == "Light Mode") {
+              setFillColor({fill: "black", color: "black"})
+              setColor({color: "black"})
+              setBackgroundColor("white")
+              setTextColor("black")
+            }
+      
+            
+      
+          }, [colorMode])
+
+    useEffect(() => {
 
 
 
-    const margin = {top: 20, right: 20, bottom: 20, left: 60}
+      if(windowDimensions.width < 500) {
+        setHeight(320)
+        setWidth(340)
+      }
+      if(windowDimensions.width < 400 && windowDimensions.width > 360) {
+        setHeight(320)
+        setWidth(340)
+      }
+      if(windowDimensions.width < 470 && windowDimensions.width > 400) {
+        setHeight(320)
+        setWidth(380)
+      }
+      if(windowDimensions.width < 680 && windowDimensions.width > 470) {
+        setHeight(360)
+        setWidth(480)
+      }
+      if(windowDimensions.width < 800 && windowDimensions.width > 600) {
+        setHeight(400)
+        setWidth(680)
+      }
+      if(windowDimensions.width < 980 && windowDimensions.width > 800) {
+        setHeight(500)
+        setWidth(680)
+      }
+      if(windowDimensions.width < 1080 && windowDimensions.width > 980) {
+        setHeight(600)
+        setWidth(700)
+      }
+      if(windowDimensions.width < 1200 && windowDimensions.width > 1080) {
+        setHeight(600)
+        setWidth(800)
+      }
+      if(windowDimensions.width > 1200) {
+        setHeight(600)
+        setWidth(900)
+      }
+    }, [windowDimensions])
 
-    const height = 600
-    const width = 900
-
+    const margin = {top: 20, right: 20, bottom: 100, left: 50}
+    const heightMargin = height - margin.left - margin.right;
+    const widthMargin = width - margin.top - margin.bottom;  
 
 
     const svgRef= useRef()
@@ -226,7 +507,7 @@ useEffect(() => {
 useEffect(() => {
 
     if(!TDData) return null;
-
+console.log(numberOfTopics(TDData[25]))
     setCurrentWeekIndex(TDData[0].followerData.length - 1)
 
 }, [TDData])
@@ -234,6 +515,71 @@ useEffect(() => {
     useEffect(() => {
 
     if(!TDData || !currentWeekIndex) return null;
+
+
+    if(colorMode == "Dark Mode") {
+      partyColors.Independent = "white"
+    }
+    if(colorMode == "Light Mode") {
+      partyColors.Independent = "black"
+    }
+
+      function testAge() {
+
+        const getDate = (d) => { 
+    
+          let together = []
+          let apart = d.split('/')
+          let day = apart[0]
+          let month = apart[1]
+          let year = apart[2]
+        
+          together.push(month, day, year)
+          together.toString().replace(",","/").replace(",","/")
+          return new Date(together)
+        }
+
+        var DOBs = TDData.map(d => d.DOB)
+
+        var properDate = DOBs.map(function(d) {
+          
+        if(!d) {
+
+        function calcAge() {
+            var birthday = +Date.now();
+            return ~~((Date.now() - birthday) / (31557600000));
+          }
+          return calcAge()
+        }
+        
+
+        function calcAge(d) {
+          var birthday = +getDate(d);
+          return ~~((Date.now() - birthday) / (31557600000));
+        }
+
+        return calcAge(d)
+          
+          
+        })
+
+        return properDate
+      }
+
+
+      console.log(testAge())
+
+
+
+
+
+
+
+
+
+
+
+  console.log(TDData.map(d => [d.gender, d.name]))
 
         const TDDataHolderBar = TDData;
 
@@ -285,7 +631,7 @@ useEffect(() => {
           } else if(baseColorOption === 0) {
               return partyColors[party(d)]
           } else if (baseColorOption === 1) {
-            return "white"
+            return "lightblue"
           }
 } 
 
@@ -316,7 +662,7 @@ if(highlightOption == 2) {
       } else if(baseColorOption === 0) {
           return partyColors[party(d)]
       } else if(baseColorOption === 1) {
-        return "white"
+        return "lightblue"
       }
 } 
 
@@ -347,9 +693,19 @@ if(highlightOption == 3) {
       } else if(baseColorOption === 0) {
           return partyColors[party(d)]
       } else if(baseColorOption === 1) {
-        return "white"
+        return "lightblue"
       }
-} 
+}  
+
+if(highlightOption == 4) {
+  if(d.gender == "Female") {
+    return cabinetColor
+  } else if(baseColorOption === 0) {
+    return partyColors[party(d)]
+} else if(baseColorOption === 1) {
+  return "lightblue"
+}
+}
            
            return partyColors[party(d)]
 
@@ -375,32 +731,31 @@ if(highlightOption == 3) {
 
         const xScale = d3.scaleBand()
                             .domain(TDDataHolderBar.map(xValue))
-                            .range([0, width])
+                            .range([0, widthMargin])
                             .padding(0.2)
 
 
         const yScale = d3.scaleLinear()
                         .domain([0, d3.max(TDDataHolderBar, yValue)])
-                        .range([height, 0]);
+                        .range([heightMargin, 0]);
 
 
 
                         console.log(yValue)
 
-        const xAxis = d3.axisBottom(xScale)
+        const xAxis = d3.axisBottom(xScale).tickFormat(d3.format(".2s"))
 
         svg
-            .select(".x-axis-bar")
-            .attr("transform", "translate(0," + 600 + ")")
+            .select(".x-axis-barchart")
+            .attr("transform", "translate(0," + heightMargin + ")")
             .transition(2000)
             .call(xAxis);
 
-        const yAxis = d3.axisLeft(yScale);
+        const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(".2s"));
 
     svg
-        .select(".y-axis-bar")
+        .select(".y-axis-barchart")
         .attr("transform", "translate(0,0)")
-        .style("color", "white")
         .transition(500)
         .call(yAxis)
 
@@ -420,7 +775,7 @@ if(highlightOption == 3) {
                 .text('a simple tooltip');
 
 
-        var rects = d3.select("#container-bar")
+        var rects = d3.select("#container-barchart")
                     .selectAll(".bar")
                     .data(TDDataHolderBar)
                     .join("rect")
@@ -434,7 +789,7 @@ if(highlightOption == 3) {
                     .attr("x", d => xScale(xValue(d)))
                     .attr("y", d => yScale(yValue(d)))
                     .attr("width", xScale.bandwidth())
-                    .attr("height", d => 600 - yScale(yValue(d)))
+                    .attr("height", d => heightMargin - yScale(yValue(d)))
                     .attr("fill", color)
 
                 const hoverColor = "#eec42d"
@@ -459,59 +814,76 @@ if(highlightOption == 3) {
                             d3.select(this).transition().attr('fill', color);
                         });
 
-                        svg.select('.x-axis-bar').selectAll("text").remove();
+                        svg.select('.x-axis-barchart').selectAll("text").remove();
 
 
         console.log(yScale(yValue(TDData[2])))
-    }, [TDData, yOption, highlightOption, baseColorOption, currentWeekIndex])
+    }, [TDData, colorMode, yOption, highlightOption, baseColorOption, currentWeekIndex, height, width])
 
     return (
-    <div className={"featuredItem"} style={{textAlign: "center", padding: "0px", margin: "0px"}}>
-            {/* <Typography variant="h5">Most Followed TDs</Typography> */}
+    <div className={"featuredItem"} style={{textAlign: "center", padding: "10px", margin: "10px", background: backgroundColor, textAlign: "center"}}>
+            
+      <Typography style={color} variant="h5">Interactive Barchart</Typography>
+          <div><FormControlLabel style={color}
+      control={<Switch value={true} onChange={onChangeColorMode}/>}
+      label="Dark Mode"
+    /></div>
       <FormControl className={classes.formControl}>
-        <InputLabel style={{fill: "white", color: "white"}} htmlFor="grouped-select">Y-Value</InputLabel>
-        <Select onChange={onChangeY} style={{ color: "white"}} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
-          <ListSubheader>Twitter Data</ListSubheader>
-          <MenuItem value={0}>Followers</MenuItem>
-          <MenuItem value={1}>Total Retweets</MenuItem>
-          <MenuItem value={2}>Original Tweets</MenuItem>          
-          <MenuItem value={3}>Follower Engagement Rate</MenuItem>
-          <MenuItem value={4}>Retweets Per Original Tweet</MenuItem>
-          <MenuItem value={5}>Polarity</MenuItem>
-          <MenuItem value={6}>Subjectivity</MenuItem>
-          <ListSubheader>Parliamentary Data (Coming Soon)</ListSubheader>          
-          <MenuItem value={7}>Written Questions Asked</MenuItem>
-          <MenuItem value={8}>Oral Questions Asked</MenuItem>
-          <ListSubheader>News Data (Coming Soon)</ListSubheader>
+        <InputLabel style={fillColor} htmlFor="grouped-select">Y-Value</InputLabel>
+        <Select onChange={onChangeY} style={color} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
+        <ListSubheader value={0}>General</ListSubheader>
+        <MenuItem value={0}>Age</MenuItem>
+          <ListSubheader value={0}>Twitter Data, last 7 days</ListSubheader>
+          <MenuItem value={1}>Followers</MenuItem>
+          <MenuItem value={2}>Retweets</MenuItem>
+          <MenuItem value={3}>Original Tweets</MenuItem>          
+          <MenuItem value={4}>Followers Per Retweet</MenuItem>
+          <MenuItem value={5}>Retweets Per Original Tweet</MenuItem>
+          <MenuItem value={6}>Avg. Tweet Polarity</MenuItem>
+          <MenuItem value={7}>Avg. Tweet Subjectivity</MenuItem>
+          <ListSubheader value={8}>Dáil Questions, 01 July - 01 Sept</ListSubheader>          
+          <MenuItem value={8}>Written Questions Asked</MenuItem>
+          <MenuItem value={9}>Oral Questions Asked</MenuItem>          
+          <MenuItem value={10}>No. of Topics TD had Questions for</MenuItem>
+          <MenuItem value={11}>Avg. Questions TD had towards Topic</MenuItem>
+          <ListSubheader value={12}>Dáil Divisions, 01 Jan - 01 Sept </ListSubheader>  
+          <MenuItem value={12}>Divisions Absent</MenuItem>
+          <MenuItem value={13}>Divisions Present</MenuItem>
+          <MenuItem value={14}>No. of votes Yes</MenuItem>
+          <MenuItem value={15}>No. of votes No</MenuItem>
+          <MenuItem value={16}>Times on Winning Side of Division</MenuItem>
+          <MenuItem value={17}>Times on Losing Side of Division</MenuItem>
+          <MenuItem value={18}>Yes and Divison Carried</MenuItem>
+          <MenuItem value={19}>Yes and Division Lost</MenuItem>
+          <MenuItem value={20}>No and Division Carried</MenuItem>
+          <MenuItem value={21}>No and Division Lost</MenuItem>
           <MenuItem disabled>News Mentions</MenuItem>
-          <ListSubheader>Electoral Data (Coming Soon)</ListSubheader>
           <MenuItem disabled>Votes recieved in last election</MenuItem>
           <MenuItem disabled>Avg. Poll</MenuItem>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel style={{fill: "white", color: "white"}} htmlFor="grouped-select">Highlight</InputLabel>
-        <Select onChange={onChangeHighlight} style={{ color: "white"}} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
-          <ListSubheader>Twitter Data</ListSubheader>
+        <InputLabel style={fillColor} htmlFor="grouped-select">Highlight</InputLabel>
+        <Select onChange={onChangeHighlight} style={color} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
           <MenuItem value={0}>Highlight None</MenuItem>
           <MenuItem value={1}>Highlight Cabinet Ministers</MenuItem>
           <MenuItem value={2}>Highlight Junior Ministers</MenuItem>
-          <MenuItem value={3}>Highlight Both</MenuItem>          
+          <MenuItem value={3}>Highlight Both</MenuItem>     
+          <MenuItem value={4}>Highlight Women</MenuItem>       
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel style={{fill: "white", color: "white"}} htmlFor="grouped-select">Base Color</InputLabel>
-        <Select onChange={onChangeBaseColor} style={{ color: "white"}} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
-          <ListSubheader>Twitter Data</ListSubheader>
+        <InputLabel style={fillColor} htmlFor="grouped-select">Base Color</InputLabel>
+        <Select onChange={onChangeBaseColor} style={color} classes={{icon:classes.icon}} defaultValue="" id="grouped-select">
           <MenuItem value={0}>Party Color</MenuItem>
-          <MenuItem value={1}>White</MenuItem>       
+          <MenuItem value={1}>Lightblue</MenuItem>       
         </Select>
       </FormControl>
-        <div className={"scroll-svg-container"}>
-            <svg ref={svgRef} height={height + margin.top + margin.bottom} width={width + margin.left + margin.right}>
-            <g id="container-bar" transform={'translate(' + margin.left + ',' + margin.top + ')'}>
-                <g className="x-axis-bar"></g>
-                <g className="y-axis-bar"></g>
+        <div className={"scroll-svg-container"} style={{marginTop: "16px"}}>
+            <svg ref={svgRef} height={heightMargin + margin.top + margin.bottom} width={widthMargin + margin.left + margin.right}>
+            <g id="container-barchart" transform={'translate(' + margin.left + ',' + margin.top + ')'}>
+                <g className="x-axis-barchart" ></g>
+                <g className="y-axis-barchart" style={color}></g>
             </g>
             </svg>
         </div>

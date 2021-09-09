@@ -29,6 +29,130 @@ const MinisterQuestionsBarChart = ({data}) => {
     const [colorOption, setColorOption] = useState(0)
 
 
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [height, setHeight] = useState(600)
+    const [width, setWidth] = useState(900)
+    const [colorMode, setColorMode] = useState("Light Mode")
+    const [color, setColor] = useState(null)
+    const [fillColor, setFillColor] = useState(null)
+    const [backgroundColor, setBackgroundColor] = useState(null)
+    const [textColor, setTextColor] = useState(null)
+    const [textSize, setTextSize] = useState("10px")
+
+    function getWindowDimensions() {
+      const { innerWidth: width, innerHeight: height } = window;
+      return {
+        width,
+        height
+      };
+    }
+
+    function useWindowDimensions() {
+     
+    
+      useEffect(() => {
+        function handleResize() {
+          setWindowDimensions(getWindowDimensions());
+        }
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+    
+      return windowDimensions;
+    }
+
+    console.log(useWindowDimensions())
+
+    const onChangeColorMode = (event, child) => {
+
+      if(child == true) {
+
+      setColorMode("Dark Mode")
+      } 
+      if(child == false) {
+        setColorMode("Light Mode")
+      }
+      
+      console.log('color mode:' + event.target.value);
+      console.log(child);
+};
+
+
+    useEffect(() => {
+
+
+      console.log(colorMode)
+      
+            if(colorMode == "Dark Mode") {
+              setFillColor({fill: "white", color: "white"})
+              setColor({color: "white"})
+              setBackgroundColor("#191C24")
+              setTextColor("white")
+      
+            }
+      
+            if(colorMode == "Light Mode") {
+              setFillColor({fill: "black", color: "black"})
+              setColor({color: "black"})
+              setBackgroundColor("white")
+              setTextColor("black")
+            }
+      
+            
+      
+          }, [colorMode])
+
+    useEffect(() => {
+
+      if(windowDimensions.width  < 430) {
+        setHeight(320)
+        setWidth(340)
+        setTextSize("6px")
+      }
+      if(windowDimensions.width < 450 && windowDimensions.width > 430) {
+        setHeight(320)
+        setWidth(360)
+        setTextSize("8px")
+      }
+      if(windowDimensions.width < 470 && windowDimensions.width > 450) {
+        setHeight(320)
+        setWidth(380)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width < 680 && windowDimensions.width > 470) {
+        setHeight(360)
+        setWidth(480)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width < 800 && windowDimensions.width > 600) {
+        setHeight(400)
+        setWidth(680)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width < 980 && windowDimensions.width > 800) {
+        setHeight(500)
+        setWidth(680)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width < 1080 && windowDimensions.width > 980) {
+        setHeight(600)
+        setWidth(700)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width < 1200 && windowDimensions.width > 1080) {
+        setHeight(600)
+        setWidth(800)
+        setTextSize("10px")
+      }
+      if(windowDimensions.width > 1200) {
+        setHeight(600)
+        setWidth(900)
+        setTextSize("10px")
+      }
+    }, [windowDimensions])
+
+
 
     // const [dataLength, setDataLength] = useState(0)
 
@@ -188,10 +312,9 @@ function toWrittenTotal() {
 }, [TDData])
 
 
-const margin = {top: 20, right: 20, bottom: 120, left: 70}
-
-const height = 600
-const width = 900
+const margin = {top: 20, right: 20, bottom: 100, left: 50}
+const heightMargin = height - margin.left - margin.right;
+const widthMargin = width - margin.top - margin.bottom; 
 
 const svgRef= useRef()
 
@@ -457,14 +580,14 @@ function coloredByPartyWithTDWhoHasContributedMostToMinister(minister) {
 
     const xScale = d3.scaleBand()
     .domain(dataOptionArr[dataOption].map(xValue))
-    .range([0, width])
+    .range([0, widthMargin])
     .padding(0.2)
 
     const svg = d3.select(svgRef.current);
 
 const yScale = d3.scaleLinear()
 .domain([0, d3.max(dataOptionArr[dataOption], yValue)])
-.range([height, 0]);
+.range([heightMargin, 0]);
 
 
 
@@ -474,11 +597,12 @@ const xAxis = d3.axisBottom(xScale).ticks(dataOptionArr[dataOption].length)
 
 svg
 .select(".x-axis-minister-questions-bar")
-.attr("transform", "translate(0," + 600 + ")")
+.attr("transform", "translate(0," + heightMargin + ")")
 .transition(2000)
 .call(xAxis)
 .selectAll("text")  
 .style("text-anchor", "end")
+.style("font-size", textSize)
 .attr("dx", "-.8em")
 .attr("dy", ".15em")
 .attr("transform", "rotate(-25)");
@@ -520,7 +644,7 @@ rects.transition()
 .attr("x", d => xScale(xValue(d)))
 .attr("y", d => yScale(yValue(d)))
 .attr("width", xScale.bandwidth())
-.attr("height", d => 600 - yScale(yValue(d)))
+.attr("height", d => heightMargin - yScale(yValue(d)))
 .attr("fill", d=> color(d)[0])
 
 
@@ -591,7 +715,7 @@ if(color(d).length == 4) {
 
 
 
-}, [TDData, mostAskedToByTD, mostAskedToTotal, dataOption, colorOption])
+}, [TDData, textSize, mostAskedToByTD, mostAskedToTotal, dataOption, colorOption, height, width])
 
 if(!TDData || !totalQuestions ||!oralQuestions || !writtenQuestions ||!mostAskedToByTD ||!mostAskedToTotal) return null;
 
@@ -618,7 +742,7 @@ return (
     </Select>
   </FormControl>
         <div className={"scroll-svg-container"}>
-        <svg ref={svgRef} height={height + margin.top + margin.bottom} width={width + margin.left + margin.right}>
+        <svg ref={svgRef} height={heightMargin + margin.top + margin.bottom} width={widthMargin + margin.left + margin.right}>
         <g id="container-minister-questions" transform={'translate(' + margin.left + ',' + margin.top + ')'}>
             <g className="x-axis-minister-questions-bar"></g>
             <g className="y-axis-minister-questions-bar"></g>

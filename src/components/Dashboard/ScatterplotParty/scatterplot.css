@@ -9,5 +9,5 @@ text-align: center;
 
 .scroll-svg-container {
 
-    overflow-x: scroll;
+    overflow: auto;
 }
